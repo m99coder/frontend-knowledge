@@ -1,5 +1,7 @@
 # Frontend Knowledge
 
+[toc]
+
 ## JavaScript
 
 ### Object Orientation, Inheritance & Prototype Chain
@@ -9,8 +11,6 @@
 * Each object has a link to a prototype object
 
 **Properties**
-
-* Each property is searched along the prototype chain
 
 ```javascript
 // parent object
@@ -92,7 +92,7 @@ console.log(p.m()); // 5
 
 **Creating objects**
 
-1. Created with syntax constructs
+_Created with syntax constructs_
 
 ```javascript
 var o = {a: 1};
@@ -115,7 +115,7 @@ function f() {
 // f » Function.prototype » Object.prototype » null
 ```
 
-2. Created with a constructor
+_Created with a constructor_
 
 ```javascript
 // A "constructor" in JavaScript is "just" a function that happens to be called with the new operator
@@ -136,7 +136,7 @@ var g = new Graph();
 // g.[[Prototype]] is the value of Graph.prototype when new Graph() is executed
 ```
 
-3. Created with `Object.create`
+_Created with `Object.create`_
 
 ```javascript
 // ES5 introduced a new method: Object.create()
@@ -157,7 +157,7 @@ var d = Object.create(null);
 console.log(d.hasOwnProperty); // undefined, because d doesn't inherit from Object.prototype
 ```
 
-4. Created with `class` keyword
+_Created with `class` keyword_
 
 ```javascript
 // ES6 introduced a new set of keywords implementing classes (remaining prototype-based): class, constructor, static, extends, super
@@ -197,7 +197,7 @@ console.log(square.area); // 9
 * Lookup for properties that are high up on the chain can have negative impact on performance
 * Trying to access nonexisting properties will always traverse the full prototype chain
 * When iterating over the properties of an object, **every** enumerable property that is on the prototype chain will be enumerated
-* To check existence of property on own object use `hasOwnProperty`; inherited from `Object.prototype` (only thin in JS which deals with properties and does **not** traverse the prototype chain)
+* To check existence of property on own object use `hasOwnProperty`; inherited from `Object.prototype` (only thing in JS which deals with properties and does **not** traverse the prototype chain)
 
 **Bad Practice**
 
