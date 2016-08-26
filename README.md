@@ -1,7 +1,5 @@
 # Frontend Knowledge
 
-[toc]
-
 ## JavaScript
 
 ### Object Orientation, Inheritance & Prototype Chain
@@ -392,57 +390,6 @@ for (var i=0; i<elems.length; i++) {
   * `disconnectedCallback`: Called when the element is removed from the DOM
   * `attributeChangedCallback(attrName, oldVal, newVal)`: The behavior occurs when an attribute of the element is added, changed, or removed, including when these values are initially set
 
-Old example:
-
-```html
-If nothing appeared below, then your browser is not supporting Custom Elements.
-<x-product data-name="Ruby" data-img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/ruby.png" data-url="http://example.com/1"></x-product>
-<x-product data-name="JavaScript" data-img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/javascript.png" data-url="http://example.com/2"></x-product>
-<x-product data-name="Python" data-img="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4621/python.png" data-url="http://example.com/3"></x-product>
-```
-```javascript
-// Create a new object based of the HTMLElement prototype
-var XProductProto = Object.create(HTMLElement.prototype);
-
-// Set up the element
-XProductProto.createdCallback = function() {
-  // Create a Shadow Root
-  var shadow = this.createShadowRoot();
-  
-  // Create a standard img element and set it's attributes
-  var img = document.createElement('img');
-  img.alt = this.getAttribute('data-name');
-  img.src = this.getAttribute('data-img');
-  img.width = '150';
-  img.height = '150';
-  img.className = 'product-img';
-  
-  // Add the image to the Shadow Root
-  shadow.appendChild(img);
-  
-  // Add an event listener to the image
-  img.addEventListener('click', function(e) {
-    window.location = this.getAttribute('data-url');
-  });
-  
-  // Create a link to the product
-  var link = document.createElement('a');
-  link.innerText = this.getAttribute('data-name');
-  link.href = this.getAttribute('data-url');
-  link.className = 'product-name';
-  
-  // Add the link to the Shadow Root
-  shadow.appendChild(link);
-};
-
-// Register the new element
-var XProduct = document.registerElement('x-product', {
-  prototype: XProductProto
-});
-```
-
-New example
-
 ```html
 <flag-icon country="nl"></flag-icon>
 ```
@@ -656,7 +603,7 @@ onconnect = function(e) {
 * Forward-Thinking: Written with ES 2016; integrates Web Components
 * Two-way databinding: Enables powerful two-way binding to any object by using adaptive techniques (efficient way to observe each property in model and automatically sync UI)
 * Routing & UI composition: Pluggable pipeline, dynamic route patterns, child routers and asynchronous screen activation
-* Broad language support: ES5, ES 2015, ES 2016 and TypeScript
+* Broad language support: ES5, ES 2015 (ES6), ES 2016 (ES.Next) and TypeScript
 * Modern architecture: Composed of smaller, focused modules
 * Extensible HTML: Custom HTML elements, add custom attributes to existing elements and control template generation
 * MV\* with Conventions: Levery conventions to make constructing effortless
@@ -2534,7 +2481,7 @@ export const counter: Reducer<number> = (state: number = 0, action: Action) => {
 * An application architecture for React utilizing a unidirectional data flow
 * Three major parts: **Dispatcher**, **Stores** and **Views** (React components)
 * When a user interacts with a React view, the view propagates an action through a central dispatcher, to the various stores that hold the application’s data and business logic, which updates all of the views that are affected
-* Control ist inverted with stores: the stores accept updates and reconcile them as appropriate, rather than depending on something external to update its data in a consistent way
+* Control is inverted with stores: the stores accept updates and reconcile them as appropriate, rather than depending on something external to update its data in a consistent way
 * Unidirectional data flow: dispatcher, stores and views are independent nodes with distinct inputs and outputs; action creators are simple, discrete, semantic helper function that facilitate passing data to the dispatcher in the form of an action
 
 ### React Native
