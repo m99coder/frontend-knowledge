@@ -888,6 +888,43 @@ var bob = {
 }
 ```
 
+_Transpiled_
+
+```javascript
+// es6
+let identity = value => value;
+
+// es5
+var identity = function(value) {
+  return value;
+}
+
+// es6
+var deliveryBoy = {
+  name: 'John',
+  handleMessage: function(message, handler) {
+    handler(message);
+  },
+  receive: function() {
+    this.handleMessage('Hello, ', message => console.log(message + this.name));
+  }
+};
+
+// es5
+var deliveryBoy = {
+  name: 'John',
+  handleMessage: function handleMessage(message, handler) {
+    handler(message);
+  },
+  receive: function receive() {
+    var _this = this;
+    this.handleMessage('Hello, ', function(message) {
+      return console.log(message + _this.name);
+    });
+  }
+};
+```
+
 **Classes**
 
 * Sugar over the prototype-based OO pattern
@@ -921,6 +958,109 @@ class SkinnedMesh extends THREE.Mesh {
   }
   
 }
+```
+
+_Transpiled_
+
+```javascript
+// es6
+class Mesh {
+  constructor() {}
+  update() {}
+}
+
+class SkinnedMesh extends Mesh {
+  constructor() {
+    super();
+  }
+  update() {
+    super.update();
+  }
+}
+
+// es5
+var _get = function get(object, property, receiver) {
+  if (object === null) object = Function.prototype;
+  var desc = Object.getOwnPropertyDescriptor(object, property);
+  if (desc === undefined) {
+    var parent = Object.getPrototypeOf(object);
+    if (parent === null) {
+      return undefined;
+    } else {
+      return get(parent, property, receiver);
+    }
+  } else if ('value' in desc) {
+    return desc.value;
+  } else {
+    var getter = desc.get;
+    if (getter === undefined) {
+      return undefined;
+    }
+    return getter.call(receiver);
+  }
+};
+
+var _createClass = function() {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ('value' in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+  return function(Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError('this hasn\'t been initialised - super() hasn\'t been called');
+  }
+  return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError('Cannot call a class as a function');
+  }
+}
+
+var Mesh = function() {
+  function Mesh() {
+    _classCallCheck(this, Mesh);
+  }
+  
+  _createClass(Mesh, [{
+    key: 'update',
+    value: function update() {}
+  }]);
+  
+  return Mesh;
+};
+
+var SkinnedMesh = function(_Mesh) {
+  _inherits(SkinnedMesh, _Mesh);
+  
+  function SkinnedMesh() {
+    _classCallCheck(this, SkinnedMesh);
+    
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SkinnedMesh).call(this));
+
+    return _this;
+  }
+  
+  _createClass(SkinnedMesh, [{
+    key: 'update',
+    value: function update() {
+      _get(Object.getPrototypeOf(SkinnedMesh.prototype), 'update', this).call(this);
+    }
+  }])
+};
 ```
 
 **Enhanced Object Literals**
@@ -966,6 +1106,25 @@ Content-Type: application/json
 X-Credentials: ${credentials}
 { "foo": ${foo},
   "bar": ${bar}}`(myOnReadyStateChangeHandler);
+```
+
+_Transpiled_
+
+```javascript
+// es6
+let saluation = 'Hello';
+let greeting = `${salutation}, World`;
+let twoLines = `${salutation},
+World`;
+let x = 1, y = 2;
+let equation = `${x} + ${y} = ${x + y}`;
+
+// es5
+var salutation = 'Hello';
+var greeting = salutation + ', World';
+var twoLines = salutation + ',\nWorld';
+var x = 1, y = 2;
+var equation = x + ' + ' + y + ' = ' + (x + y);
 ```
 
 **Destructuring**
@@ -1044,6 +1203,67 @@ console.log(a); // 3
 console.log(b); // 5
 ```
 
+_Transpiled_
+
+```javascript
+// es6
+let {color, position} = {
+  color: 'blue',
+  name: 'John',
+  state: 'New York',
+  position: 'Forward'
+};
+
+// es5
+var _color$name$state$pos = {
+  color: 'blue',
+  name: 'John',
+  state: 'New York',
+  position: 'Forward'
+};
+var color = _color$name$state$pos.color;
+var position = _color$name$state$pos.position;
+
+// es6
+function generateObj() {
+  return {
+    color: 'blue',
+    name: 'John',
+    state: 'New York',
+    position: 'Forward'
+  };
+}
+
+let {name, state} = generateObj();
+let {name:firstName, state:location} = generateObj();
+
+// es5
+function generateObj {
+  return {
+    color: 'blue',
+    name: 'John',
+    state: 'New York',
+    position: 'Forward'
+  };
+}
+
+var _generateObj = generateObj();
+var name = _generateObj.name;
+var state = _generateObj.state;
+
+var _generateObj2 = generateObj();
+var firstName = _generateObj2.name;
+var location = _generateObj2.state;
+
+// es6
+let [first,,,,fifth] = ['red', 'yellow', 'green', 'blue', 'orange'];
+
+// es5
+var _ref = ['red', 'yellow', 'green', 'blue', 'orange'];
+var first = _ref[0];
+var fifth = _ref[4];
+```
+
 **Default + Rest + Spread**
 
 * Callee-evaluated default parameter values
@@ -1070,6 +1290,35 @@ function f(x, y, z) {
 console.log(f(...[1, 2, 3])); // 6
 ```
 
+_Transpiled_
+
+```javascript
+// es6
+function greet(greeting, name = 'John') {
+  console.log(greeting + ', ' + name);
+}
+
+// es5
+function greet(greeting) {
+  var name = arguments.length <= 1 || arguments[1] === undefined ? 'John' : arguments[1];
+  console.log(greeting + ', ' + name);
+}
+
+// es6
+function receive(complete = () => console.log('complete')) {
+  complete();
+}
+
+// es5
+function receive() {
+  var complete = arguments.length <= 0 || arguments[0] === undefined ? function() {
+    return console.log('complete');
+  } : arguments[0];
+  
+  complete();
+}
+```
+
 **Let + Const**
 
 * Block-scoped binding constructs
@@ -1091,6 +1340,16 @@ function f() {
     let x = 'inner';
   }
 }
+```
+
+_Transpiled_
+
+```javascript
+// es6
+const VALUE = 'hello world';
+
+// es5
+var VALUE = 'hello world';
 ```
 
 **Iterators + For..Of**
@@ -1146,6 +1405,39 @@ for (var n of fibonacci) {
 }
 ```
 
+_Transpiled_
+
+```javascript
+// es6
+function* greet() {
+  console.log(`You called 'next()'`);
+}
+
+let greeter = greet();
+let next = greeter.next();
+
+// es5
+var _marked = [greet].map(regeneratorRuntime.mark);
+
+function greet() {
+  return regeneratorRuntime.wrap(function greet$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          console.log('You called \'next()\'');
+        
+        case 1:
+        case 'end':
+          return _context.stop();
+      }
+    }
+  }, _marked[0], this);
+}
+
+var greeter = greet();
+var next = greeter.next();
+```
+
 **Unicode**
 
 * Non-breaking additions to support full Unicode
@@ -1180,6 +1472,34 @@ export default function(x) {
 // app.js
 import ln, {pi, e} from 'lib/mathplusplus.js';
 alert('2π = ' + ln(e) * pi * 2);
+```
+
+_Transpiled_
+
+```javascript
+// es6
+import {sumTwo} from 'math/addition';
+
+export function sumTwo(a, b) {
+  return a + b;
+}
+
+export function sumThree(a, b, c) {
+  return a + b + c;
+}
+
+// es5
+var _addition = require('math/addition');
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+function sumTwo(a, b) {
+  return a + b;
+}
+
+exports.sumTwo = sumTwo;
 ```
 
 **Module Loaders**
