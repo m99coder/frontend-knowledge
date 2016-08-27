@@ -2721,6 +2721,118 @@ setTimeout(() => smartObj.interact(), 1000);
 * CLI for Angular 2 applications based on ember-cli
 * Build system now uses Webpack as well
 
+**Examples**
+
+```shell
+$ ng new app-name
+```
+```typescript
+// src/main.ts
+import { bootstrap } from '@angular/platform-browser-dynamic';
+import { enableProdMode } from '@angular/core';
+import { AppComponent, environment } from './app/';
+
+if (environment.production) {
+  enableProdMode();
+}
+
+bootstrap(AppComponent);
+
+// src/app/index.ts
+export * from './environments/environment';
+export * from './app.component';
+
+// src/app/environments/environment.ts
+export const environment = {
+  production: false
+};
+
+// src/app/app.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css']
+})
+export class AppComponent {
+  
+}
+```
+```html
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AppName</title>
+  <base href="/">
+</head>
+<body>
+  <app-root>Loading...</app-root>
+</body>
+</html>
+```
+```shell
+ng generate route about
+```
+```typescript
+// src/app/+about/index.ts
+export { AboutComponent } from './about.component';
+
+// src/app/+about/about.component.ts
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  moduleId: module.id,
+  selector: 'app-about',
+  templateUrl: 'about.component.html',
+  styleUrls: ['about.component.css']
+})
+export class AboutComponent implements OnInit {
+  constructur() {}
+  ngOnInit() {}
+}
+```
+```shell
+ng generate directive footer
+```
+```typescript
+import { Directive } from '@angular/core';
+
+@Directive({
+  selector: '[footer]'
+})
+export class Footer {
+  constructor() {}
+}
+```
+```shell
+ng generate pipe uppercase
+```
+```typescript
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'uppercase'
+})
+export class Uppercase implements PipeTransform {
+  transform(value: any, args?: any): any {
+    return null;
+  }
+}
+```
+```shell
+ng generate service data
+```
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class DataService {
+  constructor() {}
+}
+```
+
 ### Angular Universal
 
 * Source: [Universal](https://universal.angular.io/)
