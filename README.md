@@ -649,6 +649,278 @@ onconnect = function(e) {
   * Utility function: Helper methods for common tasks.
   * Experimental features and elements: Experimental template and styling features. Feature layering.
 
+_Examples_
+
+```html
+<dom-module id="hello-world">
+  <template>
+    <input type="text" value="{{name::keyup}}">
+    <h1>Hello, [[name]]</h1>
+  </template>
+  <script>
+    Polymer({
+      is: 'hello-world'
+    });
+  </script>
+</dom-module>
+```
+```html
+<dom-module id="lifecycle-element">
+  <template>
+    <button id="btn">Hello World</button>
+  </template>
+  <script>
+    Polymer({
+      is: 'lifecycle-element',
+      created: functon() {
+        this.log('created');
+        this.addEventListener('click', function() {
+          this.remove();
+        });
+      },
+      ready: function() {
+        this.log('ready');
+        this.tickCount = 1;
+        this.ticker = setInterval(this.tick.bind(this), 500);
+      },
+      attached: function() {
+        this.log('attached');
+      },
+      detached: function() {
+        this.log('detached');
+        clearInterval(this.ticker);
+      },
+      attributeChanged: function(name, oldValue, newValue) {
+        console.log('%s was changed to %s from %s', name, newValue, oldValue);
+      },
+      tick: function() {
+        this.setAttribute('data-id', Math.random());
+        this.tickCount++;
+        if (this.tickCount > 10) {
+          clearInterval(this.ticker);
+        }
+      },
+      updateAttribute: function(cycle) {
+        this.setAttribute('class', cycle);
+      },
+      log: function(cycle) {
+        console.log('» ' + cycle);
+        this.$ && console.dir(this.$.btn);
+        this.updateAttribute(cycle);
+      }
+    });
+  </script>
+</dom-module>
+```
+```html
+<dom-module id="business-card">
+  <template>
+    <h1>Deadpool</h1>
+    <h2>Superhero</h2>
+    <h3>Marvel</h3>
+    <style>
+      :host {
+        --card-color: red;
+        --text-color: black;
+      }
+      :host {
+        background-color: var(--custom-card-color, --card-color);
+      }
+      h1, h2, h3 {
+        color: var(--custom-text-color, --text-color);
+      }
+    </style>
+    <script>
+      Polymer({
+        is: 'business-card'
+      });
+    </script>
+</dom-module>
+```
+```html
+<link rel="import" href="business-card.html">
+<dom-module id="my-card">
+  <template>
+    <business-card></business-card>
+    <style>
+      business-card {
+        --custom-card-color: green;
+        --custom-text-color: white;
+      }
+    </style>
+  </template>
+  <script>
+    Polymer({
+      is: 'my-card'
+    });
+  </script>
+</dom-module>
+```
+```html
+<!--
+<prop-element name="Deadpool"></prop-element>
+rewritten to
+<prop-element name="Deadpool" position="Bad Hero"></prop-element>
+ -->
+<dom-module id="prop-element">
+  <template>
+    <h1>[[name]]</h1>
+    <h2>[[position]]</h2>
+  </template>
+  <script>
+    Polymer({
+      is: 'prop-element',
+      properties: {
+        type: String,
+        reflectToAttribute: true,
+        readOnly: true,
+        computed: 'computedPosition(name)'
+      },
+      computedPosition: function(name) {
+        return name === 'Deadpool' ? 'Bad Hero' : 'Hero';
+      }
+    });
+  </script>
+</dom-module>
+```
+```html
+<dom-module id="child-element">
+  <template>
+    <p>Child</p>
+    <input type="text" value="{{data::input}}">
+    <p>Output: {{data}}</p>
+  </template>
+  <script>
+    Polymer({
+      is: 'child-element',
+      properties: {
+        data: {
+          type: String,
+          notifiy: true
+        }
+      },
+      ready: function() {
+        this.addEventListener('data-changed', function(e) {
+          console.log(e.detail.value);
+        });
+      }
+    });
+  </script>
+</dom-module>
+```
+```html
+<link rel="import" href="child-element.html">
+<dom-module id="parent-element">
+  <template>
+    <p>Parent</p>
+    <input type="text" value="{{parentData::input}}">
+    <child-element data="[[parentData]]"><child-element>
+  </template>
+  <script>
+    Polymer({
+      is: 'parent-element'
+    });
+  </script>
+</dom-module>
+```
+```html
+<dom-module id="observer-element">
+  <template>
+    <input type="text" value="{{color::input}}">
+    <h1 id="hello">Hello</h1>
+  </template>
+  <script>
+    Polymer({
+      is: 'observer-element',
+      properties: {
+        color: {
+          type: String,
+          observer: 'colorChanged'
+        }
+      },
+      colorChanged: function(newValue) {
+        this.$.hello.style.color = newValue;
+      }
+    })
+  </script>
+</dom-module>
+```
+```html
+<dom-module id="listener-element">
+  <template>
+    <button on-click="clickHandler">Annotated</button>
+    <button id="btnId">Listener</button>
+  </template>
+  <script>
+    Polymer({
+      is: 'listener-element',
+      clickHandler: function() {
+        console.log('click');
+      },
+      listeners: {
+        'btnId.click': 'clickHandler'
+      }
+    });
+  </script>
+</dom-module>
+```
+```html
+<!--
+<my-range value="10"></my-range>
+<script>
+  document.querySelector('my-range').addEventListener('valueChanged', function(e) {
+    console.log(e.detail.increased);
+  });
+</script>
+ -->
+<dom-module id="my-range">
+  <template>
+    <input type="range" value="{{value::input}}" max="100" min="0">
+  </template>
+  <script>
+    Polymer({
+      is: 'my-range',
+      properties: {
+        value: {
+          type: Number,
+          observer: 'handleInput'
+        }
+      },
+      handleInput: function(newValue, oldValue) {
+        if (oldValue) {
+          this.fire('valueChanged', {increased: newValue > oldValue});
+        }
+      }
+    });
+  </script>
+</dom-module>
+```
+```html
+<dom-module id="cart-list">
+  <template>
+    <template is="dom-repeat" items="{{foods}}">
+      <button on-click="add">+</button>
+      <span>{{item.quantity}} - {{item.name}} (#{{index}})</span>
+    </template>
+  </template>
+  <script>
+    Polymer({
+      is: 'cart-list',
+      ready: function() {
+        this.foods = [
+          {name: 'Pizza', quantity: 0},
+          {name: 'Burger', quantity: 0},
+          {name: 'Taco', quantity: 0}
+        ];
+      },
+      add: function(e) {
+        e.model.set('item.quantity', e.model.item.quantity + 1);
+      }
+    });
+  </script>
+</dom-module>
+```
+
 **Knockout**
 
 * Source: [Key concepts](http://knockoutjs.com/)
