@@ -1000,6 +1000,68 @@ rewritten to
 * Tooling friendly
 * Think React + Polymer but without the bloat
 
+_Examples_
+
+```html
+<!--
+<hello-world></hello-world>
+<script src="hello.tag" type="riot/tag"></script>
+<script>
+  riot.mount('hello-world', {
+    greeting: 'Hello'
+  });
+</script>
+ -->
+<hello-world>
+  <p>{ opts.greeting }, { who }!</p>
+  <input name="who" type="text" value="{ who }" onkeyup="{ whoChanged }">
+  <script>
+    var self = this;
+    this.who = 'Marco';
+    this.whoChanged = function() {
+      this.who = self.whoInput.value;
+    };
+  </script>
+</hello-world>
+```
+```html
+<!--
+<app></app>
+<script src="app.tag" type="riot/tag"></script>
+<script>
+  riot.mount('app');
+</script>
+ -->
+<app>
+  <h2>Rice Krispie Treats Recipe</h2>
+  <ingredient each="{ ingredients }"></ingredient>
+  <script>
+    this.ingredients = [
+      {name: 'Butter', amount: '3 Tbsp'},
+      {name: 'Marshmallow Fluff', amount: '10 oz'},
+      {name: 'Rice Krispies Cereal', amount: '6 cups'}
+    ];
+  </script>
+</app>
+<ingredient>
+  <label class="{ added: added }">
+    <input type="checkbox" onchange="{ onCheck }">
+    { name }
+  </label>
+  <span>{ amount }</span>
+  <style>
+    label.added {
+      text-decoration: line-through;
+    }
+  </style>
+  <script>
+    this.onCheck = function(e) {
+      this.added = e.target.checked;
+    };
+  </script>
+</ingredient>
+```
+
 **Mithril**
 
 * Source: [Mithril](http://mithril.js.org/)
