@@ -3241,6 +3241,181 @@ export const counter: Reducer<number> = (state: number = 0, action: Action) => {
 * Kind of verbose (isn’t as straight forward as pure HTML & JS
 * Not a full framework (no router nor model management)
 
+### Examples
+
+```react
+// main.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('app'));
+
+// App.js
+import React from 'react';
+
+class App extends React.Component {
+  render() {
+    // JSX transpiled to
+    // return React.createElement('h1', null, 'Hello, World!');
+    return <h1>Hello, World!</h1>;
+    // there must be one root element
+    /*
+    return (
+      <div>
+        <h1>Hello, World!</h1>
+        <p>How are you?</p>
+      </div>
+    );
+    */
+  }
+}
+
+export default App;
+```
+```react
+// stateless function component
+const App = () => <h1>Hello, World!</h1>;
+```
+```react
+class App extends React.Component {
+  render() {
+    let greeting = this.props.greeting;
+    return <h1>{greeting}{exclamation}</h1>;
+  }
+}
+
+App.propTypes = {
+  greeting: React.PropTypes.string,
+  exclamation: React.PropTypes.string.isRequired
+};
+
+App.defaultProps = {
+  exclamation: '!'
+};
+
+ReactDOM.render(
+  <App greeting="Hello" />,
+  document.getElementById('app');
+);
+```
+```react
+class App extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      greeting: 'Hello'
+    };
+    this.update = this.update.bind(this);
+  }
+  
+  update(e) {
+    this.setState({greeting: e.target.value});
+    // this.setState({greeting: ReactDOM.findDOMNode(this.refs.header).value});
+  }
+  
+  render() {
+    return (
+      <div>
+        <!--
+        <h1>{this.state.greeting}</h1>
+        <input type="text" onChange={this.update} />
+         -->
+        <Greeting ref="header" greeting={this.state.greeting} update={this.update} />
+      </div>
+    );
+  }
+  
+}
+
+const Greeting = (props) => {
+  return (
+    <div>
+      <h1>{props.greeting}</h1>
+      <input type="text" onChange={props.update} />
+    </div>
+  )
+};
+```
+```react
+class App extends React.Component {
+  render() {
+    return <Button>I <Heart /> React</Button>;
+  }
+}
+
+class Button extends React.Component {
+  render() {
+    return <button>{this.props.children}</button>;
+  }
+}
+
+const Heart = () => <span className="glyphicon glyphicon-heart"></span>;
+```
+```react
+class App extends React.Component {
+
+  constructor() {
+    super();
+  }
+  
+  componentWillMount() {}
+  componentWillReceiveProps() {}
+  shouldComponentUpdate()
+  render() {}
+  componentDidUpdate()
+  componentDidMount() {}
+  componentWillUnmount() {}
+}
+```
+```react
+let Mixin = InnerComponent => class extends React.Component {
+  
+  constructor() {
+    super();
+  }
+  
+  // ...
+  
+};
+
+const Button = (props) => <button onClick={props.update}>{props.label}</button>;
+const Label = (props) => <label onMouseMove={props.update}>{props.label}</label>;
+
+let ButtonMixed = Mixin(Button);
+let LabelMixed = Mixin(Label);
+```
+```react
+class App extends React.Component {
+  
+  constructor() {
+    super();
+    this.state = {data: [/* ... */]};
+  }
+  
+  render() {
+    let rows = this.state.data.map(person => {
+      return <PersonRow key={person.id} data={person} />;
+    });
+    return (
+      <table>
+        <tbody>{rows}</tbody>
+      </table>
+    );
+  }
+}
+
+const PersonRow = (props) => {
+  return (
+    <tr>
+      <td>{props.data.id}</td>
+      <td>{props.data.name}</td>
+    </tr>
+  );
+};
+```
+
 ### Flux
 
 * Source: [Flux](https://github.com/facebook/flux)
